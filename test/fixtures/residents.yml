@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  apartment_number: MyString
+  block: MyString
+  apo_id: 1
+  time_answer: MyString
+  synchronized: 1
+
+two:
+  apartment_number: MyString
+  block: MyString
+  apo_id: 1
+  time_answer: MyString
+  synchronized: 1
