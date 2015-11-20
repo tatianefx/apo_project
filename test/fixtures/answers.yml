@@ -9,7 +9,7 @@ one:
   room_id: 1
   concept_id: 1
   attribute_id: 1
-  synchronized_id: 1
+  synchronized: 1
 
 two:
   id: 1
@@ -20,4 +20,4 @@ two:
   room_id: 1
   concept_id: 1
   attribute_id: 1
-  synchronized_id: 1
+  synchronized: 1
