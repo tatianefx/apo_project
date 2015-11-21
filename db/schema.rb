@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120171352) do
+ActiveRecord::Schema.define(version: 20151121194913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,19 +148,19 @@ ActiveRecord::Schema.define(version: 20151120171352) do
 
   create_table "qualifiers", force: :cascade do |t|
     t.string   "text"
-    t.integer  "begin"
-    t.integer  "end"
+    t.integer  "begin_"
+    t.integer  "end_"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "questions", force: :cascade do |t|
     t.string   "text"
-    t.integer  "type"
+    t.integer  "type_question"
     t.integer  "order"
     t.integer  "scale_colors"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "residents", force: :cascade do |t|
@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(version: 20151120171352) do
 
   create_table "rooms", force: :cascade do |t|
     t.string   "name"
-    t.integer  "type"
+    t.integer  "type_room"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -187,6 +187,15 @@ ActiveRecord::Schema.define(version: 20151120171352) do
     t.integer  "respondent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "uploads", force: :cascade do |t|
+    t.string   "upload_file_name"
+    t.string   "upload_content_type"
+    t.integer  "upload_file_size"
+    t.datetime "upload_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

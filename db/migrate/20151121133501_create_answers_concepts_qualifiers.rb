@@ -4,7 +4,7 @@ class CreateAnswersConceptsQualifiers < ActiveRecord::Migration
       t.references :answer, index: true
       t.references :concept, index: true
       t.references :qualifier, index: true
-      
+
       t.timestamps null: false
     end
   end

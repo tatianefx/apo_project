@@ -2,10 +2,10 @@
 
 one:
   text: MyString
-  begin: 1
-  end: 1
+  begin_: 1
+  end_: 1
 
 two:
   text: MyString
-  begin: 1
-  end: 1
+  begin_: 1
+  end_: 1

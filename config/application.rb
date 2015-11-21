@@ -22,5 +22,11 @@ module ApoProject
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Enable escaping HTML in JSON.
+    config.active_support.escape_html_entities_in_json = true
+
+    # Enable the asset pipeline
+    config.assets.enabled = true
   end
 end

@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  type: 1
+  type_room: 1
 
 two:
   name: MyString
-  type: 1
+  type_room: 1

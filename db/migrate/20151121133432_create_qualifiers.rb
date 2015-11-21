@@ -2,8 +2,8 @@ class CreateQualifiers < ActiveRecord::Migration
   def change
     create_table :qualifiers do |t|
       t.string :text
-      t.integer :begin
-      t.integer :end
+      t.integer :begin_
+      t.integer :end_
 
       t.timestamps null: false
     end
