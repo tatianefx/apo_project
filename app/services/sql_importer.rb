@@ -105,5 +105,4 @@ class SqlImporter
 
 		Room.create! id: id, name: name, type: type
 	end
-
 end

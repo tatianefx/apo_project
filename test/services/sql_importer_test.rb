@@ -98,4 +98,5 @@ class SqlImporterTest < ActiveSupport::TestCase
 		assert_equal 'Sala', Room.find(49).name
 		assert_equal 3, Room.find(49).type
 	end
+	
 end
