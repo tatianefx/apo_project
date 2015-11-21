@@ -6,7 +6,7 @@ class SqlImporterTest < ActiveSupport::TestCase
 			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
 			"INSERT INTO `tecnica` VALUES (42,'Questionario',2);\n" \
 			"INSERT INTO `tecnica` VALUES (67,'Análise Walkthrough',1);\n" \
-			"END TRANSACTION"
+			"COMMIT;"
 		
 		SqlImporter.new(sql).import
 
@@ -25,7 +25,7 @@ class SqlImporterTest < ActiveSupport::TestCase
 		sql = "BEGIN TRANSACTION;\n" \
 			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
 			"INSERT INTO `apo` VALUES (21,'APO - IPEA APARTAMENTOS','','Uberlândia','Minas Gerais');\n" \
-			"END TRANSACTION"
+			"COMMIT;"
 		
 		SqlImporter.new(sql).import
 
@@ -39,7 +39,7 @@ class SqlImporterTest < ActiveSupport::TestCase
 	end
 
 =begin
-	test 'im apo_technical records' do
+	test 'importing apo_technical records' do
 		sql = "BEGIN TRANSACTION;\n" \
 			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
 			"INSERT INTO `apo_tecnica` VALUES (21,42);\n" \
@@ -56,4 +56,46 @@ class SqlImporterTest < ActiveSupport::TestCase
 	end
 =end
 
+	test 'importing attribute records' do
+		sql = "BEGIN TRANSACTION;\n" \
+			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
+			"INSERT INTO `atributo`- VALUES (178,'Acima de 1000 metros (acima de 10 quarteirões)');\n" \
+			"COMMIT;"
+
+		SqlImporter.new(sql).import
+
+		assert_equal 1, Attribute.count
+		
+		assert_not_nil Attribute.find(178)
+		assert_equal 'Acima de 1000 metros (acima de 10 quarteirões)', Attribute.find(178).name
+	end
+
+	test 'importing category records' do
+		sql = "BEGIN TRANSACTION;\n" \
+			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
+			"INSERT INTO `categoria` VALUES (274,'CONJUNTO / QUARTEIRÃO');\n" \
+			"COMMIT;"
+
+		SqlImporter.new(sql).import
+
+		assert_equal 1, Category.count
+		
+		assert_not_nil Category.find(274)
+		assert_equal 'CONJUNTO / QUARTEIRÃO', Category.find(274).name
+	end
+
+	test 'importing room records' do
+		sql = "BEGIN TRANSACTION;\n" \
+			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
+			"INSERT INTO `comodo` VALUES (49,'Sala',3);\n" \
+			"COMMIT;"
+
+		SqlImporter.new(sql).import
+
+		assert_equal 1, Room.count
+		
+		assert_not_nil Room.find(49)
+		assert_equal 'Sala', Room.find(49).name
+		assert_equal 3, Room.find(49).type
+	end
 end

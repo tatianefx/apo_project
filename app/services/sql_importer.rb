@@ -3,9 +3,9 @@ class SqlImporter
 	TABLES_MAP = {
 		'apo' => Apo,
 #		'apo_tecnica' => AposTechnical,
-#		'atributo' => Attribute,
-#		'categoria' => Category,
-#		'comodo' => Room,
+		'atributo' => Attribute,
+		'categoria' => Category,
+		'comodo' => Room,
 #		'conceito' => Concept,
 #		'conceito_pergunta' => AnswersConcept,
 #		'conceito_qualificador' => ConceptsQualifier,
@@ -17,7 +17,7 @@ class SqlImporter
 #		'pergunta_qualificador' => AnswersQualifier,
 #		'qualificador' => Qualifier,
 #		'resposta' => Answer,
-		'tecnica' => Technical,
+		'tecnica' => Technical
 #		'tecnica_categoria' => CategoriesTechnical
 	}
 
@@ -43,9 +43,14 @@ class SqlImporter
 					import_technical(instruction)
 				when 'apo'
 					import_apo(instruction)
-				when 'apo_tecnica'
-					import_apo_technical(instruction)
+				when 'atributo'
+					import_attribute(instruction)
+				when 'categoria'
+					import_category(instruction)
+				when 'comodo'
+					import_room(instruction)
 				end
+
 			end	
 		end
 	end
@@ -79,5 +84,26 @@ class SqlImporter
 	end
 =end
 
+	def import_attribute(instruction)
+		id = instruction.match(/(\w+),/)[1]
+		name = instruction.match(/'(.+)'/)[1]
+
+		Attribute.create! id: id, name: name
+	end
+
+	def import_category(instruction)
+		id = instruction.match(/(\w+),/)[1]
+		name = instruction.match(/'(.+)'/)[1]
+
+		Category.create! id: id, name: name
+	end
+
+	def import_room(instruction)
+		id = instruction.match(/(\w+),/)[1]
+		name = instruction.match(/'(.+)'/)[1]
+		type = instruction.match(/\',(.+)\)/)[1]
+
+		Room.create! id: id, name: name, type: type
+	end
 
 end
