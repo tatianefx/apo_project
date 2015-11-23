@@ -10,7 +10,7 @@
 #file = File.open("/db/export.sql", "r")
 #data = file.read
 
-data = File.read("db/export.sql")
+data = File.read("./db/export.sql")
 
 SqlImporter.new(data).import
 
