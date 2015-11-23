@@ -7,5 +7,9 @@ class AnswersController < ApplicationController
       format.html  # index.html.erb
     end
   end
+
+  def graph
+  	
+  end
   
 end

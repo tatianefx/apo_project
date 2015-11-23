@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  resources :answers, only: :index
+  resources :questions, only: :index
+
+  resources :answers, only: :index do
+  	get :graph, on: :collection
+  end
   
 	resources :upload, only: [:index, :create, :new]
 

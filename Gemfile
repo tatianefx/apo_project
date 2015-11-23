@@ -67,4 +67,6 @@ gem 'rails_12factor', group: :production
 
 gem 'paperclip'
 
+gem 'chart-js-rails'
+
 ruby '2.2.0'
