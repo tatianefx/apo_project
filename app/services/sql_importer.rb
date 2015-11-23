@@ -168,11 +168,14 @@ class SqlImporter
 	def import_answer(instruction)
 		id = instruction.match(/\((\w+),/)[1]
 		resident_id = instruction.match(/\(\w+,(\w+),/)[1]
-    question_id = instruction.match(/,\w+,(\w+),'/)[1]
-    text_ = instruction.match(/'(.*)'/)[1]
-    apo_id = instruction.match(/',(\w+),/)[1]
-    room_id = instruction.match(/',\w+,(\w+),/)[1]
-    concept_id = instruction.match(/',\w+,\w+,(\w+),/)[1]
+    question_id = instruction.match(/,\w+,(\w+),/)[1]
+    text_ = instruction.match(/\(\w+,\d+,\d+,(\w+)|'(.*)',/)[2]
+    if text_ == nil
+    	text_ = instruction.match(/\(\w+,\d+,\d+,(\w+)|'(.*)',/)[1]
+    end
+    apo_id = instruction.match(/,(\w+),/)[1]
+    room_id = instruction.match(/,\w+,(\w+),/)[1]
+    concept_id = instruction.match(/,\w+,\w+,(\w+),/)[1]
     attribute_id = instruction.match(/(\w+),\w+\)/)[1]
     synchronized = instruction.match(/,(\w+)\)/)[1]
 
