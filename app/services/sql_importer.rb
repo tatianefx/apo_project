@@ -55,10 +55,10 @@ class SqlImporter
 					import_question(instruction)
 				when 'qualificador'
 					import_qualifier(instruction)	
-				when 'morador'
-					import_resident(instruction)
-				when 'resposta'
-					import_answer(instruction)											
+#				when 'morador'
+#					import_resident(instruction)
+#				when 'resposta'
+#					import_answer(instruction)											
 				end
 
 			end	
@@ -71,7 +71,9 @@ class SqlImporter
 		name = instruction.match(/'(.+)'/)[1]
 		respondent = instruction.match(/,(\w+)/)[1]
 
-		Technical.create! id: id, name: name, respondent: respondent
+		unless Technical.exists?(:id => id) 
+			Technical.create! id: id, name: name, respondent: respondent
+		end
 	end
 
 	def import_apo(instruction)
@@ -82,28 +84,37 @@ class SqlImporter
     city = instruction.match(/'\w*','(.+)','/)[1]
     state = instruction.match(/'(.+)','(.+)'/)[2]
 
-    Apo.create! id: id, name: name, text: text, city: city, state: state 
+
+		if (Apo.exists?(:id => id) == false)
+			Apo.create! id: id, name: name, text: text, city: city, state: state 
+		end    
 	end
 	
 	def import_apo_technical(instruction)
 		apo = instruction.match(/(\w+),/)[1]
 		technical = instruction.match(/,(\w+)\)/)[1]
 
-		AposTechnical.create! apo: apo, technical: technical
+		if (AposTechnical.exists?(:id => id) == false)
+			AposTechnical.create! apo: apo, technical: technical			
+		end  
 	end
 
 	def import_attribute(instruction)
 		id = instruction.match(/\((\w+),/)[1]
 		name = instruction.match(/'(.+)'/)[1]
 
-		Attribute.create! id: id, name: name
+		if (Attribute.exists?(:id => id) == false)
+			Attribute.create! id: id, name: name		
+		end 
 	end
 
 	def import_category(instruction)
 		id = instruction.match(/\((\w+),/)[1]
 		name = instruction.match(/'(.+)'/)[1]
 
-		Category.create! id: id, name: name
+		if (Category.exists?(:id => id) == false)
+			Category.create! id: id, name: name
+		end 
 	end
 
 	def import_room(instruction)
@@ -111,7 +122,9 @@ class SqlImporter
 		name = instruction.match(/'(.+)'/)[1]
 		type_room = instruction.match(/,(\w+)/)[1]
 
-		Room.create! id: id, name: name, type_room: type_room
+		if (Room.exists?(:id => id) == false)
+			Room.create! id: id, name: name, type_room: type_room			
+		end 
 	end
 
 	def import_concept(instruction)
@@ -119,7 +132,9 @@ class SqlImporter
 		name = instruction.match(/'(.+)'/)[1]
 		order = instruction.match(/,(\w+)/)[1]
 
-		Concept.create! id: id, name: name, order: order
+		if (Apo.exists?(:id => id) == false)
+			Concept.create! id: id, name: name, order: order
+		end 
 	end
 
 	def import_resident(instruction)
@@ -130,11 +145,13 @@ class SqlImporter
     time_answer = instruction.match(/'.*',\w+,'(.+)'/)[1]
     synchronized = instruction.match(/',(\w+)\)/)[1]
 
-    if synchronized == 'NULL'
-    	Resident.create! id: id, apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer
-    else
-    	Resident.create! id: id, apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer, synchronized: synchronized    	
-    end
+    if (Apo.exists?(:id => id) == false)
+			if synchronized == 'NULL'
+    		Resident.create! apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer
+    	else
+    		Resident.create! apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer, synchronized: synchronized    	
+    	end
+		end 
 	end
 
 	def import_question(instruction)
@@ -144,7 +161,9 @@ class SqlImporter
     order = instruction.match(/\w+,(\w+)/)[1]
     scale_colors = instruction.match(/,(\w+)\)/)[1]
 
-    Question.create! id: id, text: text, type_question: type_question, order: order, scale_colors: scale_colors
+    if (Question.exists?(:id => id) == false)
+			Question.create! id: id, text: text, type_question: type_question, order: order, scale_colors: scale_colors
+		end 
 	end
 
 	def import_qualifier(instruction)
@@ -153,8 +172,9 @@ class SqlImporter
     begin_ = instruction.match(/',(\w+)/)[1] 
     end_ = instruction.match(/,(\w+)\)/)[1]
 
-    @qualifier = Qualifier.create! id: id, text: text, begin_: begin_, end_: end_ 
-		@qualifier.save
+    if (Qualifier.exists?(:id => id) == false)
+    	Qualifier.create! id: id, text: text, begin_: begin_, end_: end_    	
+    end
 	end
 
 	def import_answer(instruction)
