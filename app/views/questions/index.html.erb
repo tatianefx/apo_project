@@ -1,0 +1,21 @@
+<h1>Perguntas</h1>
+
+<table>
+  <tr>
+    <th>id</th>
+    <th>texto</th>
+    <th>tipo</th>
+    <th>ordem</th>
+    <th>escala_cores</th>
+  </tr>
+ 
+<% @questions.each do |question| %>
+  <tr>
+    <td><%= question.id %></td>
+    <td><%= question.text %></td>
+    <td><%= question.type_question %></td>
+    <td><%= question.order %></td>
+    <td><%= question.scale_colors %></td>
+  </tr>
+<% end %>
+</table>
