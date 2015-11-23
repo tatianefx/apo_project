@@ -4,8 +4,6 @@ class CreateQualifiers < ActiveRecord::Migration
       t.string :text
       t.integer :begin_
       t.integer :end_
-
-      t.timestamps null: false
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AnswersConceptTest < ActiveSupport::TestCase
+class ConceptsQuestionTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

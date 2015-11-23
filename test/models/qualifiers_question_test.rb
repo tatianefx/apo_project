@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AnswersConceptsQualifierTest < ActiveSupport::TestCase
+class QualifiersQuestionTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

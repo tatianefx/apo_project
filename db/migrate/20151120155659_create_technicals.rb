@@ -3,8 +3,6 @@ class CreateTechnicals < ActiveRecord::Migration
     create_table :technicals do |t|
       t.string :name
       t.integer :respondent
-
-      t.timestamps null: false
     end
   end
 end

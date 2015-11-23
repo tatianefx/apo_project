@@ -3,8 +3,6 @@ class CreateConcepts < ActiveRecord::Migration
     create_table :concepts do |t|
       t.string :name
       t.integer :order
-
-      t.timestamps null: false
     end
   end
 end

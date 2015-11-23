@@ -5,8 +5,6 @@ class CreateApos < ActiveRecord::Migration
       t.string :text
       t.string :city
       t.string :state
-
-      t.timestamps null: false
     end
   end
 end

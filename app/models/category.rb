@@ -1,7 +1,4 @@
 class Category < ActiveRecord::Base
-	has_many :answers_categories
-	has_many :categories_technicals
-
-	has_many :answers, through: :answers_categories
-	has_many :technical, through: :categories_technicals
+	has_and_belongs_to_many :questions
+	has_and_belongs_to_many :technical
 end

@@ -43,17 +43,33 @@ class SqlImporterTest < ActiveSupport::TestCase
 	test 'importing apo_technical records' do
 		sql = "BEGIN TRANSACTION;\n" \
 			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
-			"INSERT INTO `apo_tecnica` VALUES (21,42);\n" \
-			"END TRANSACTION"
+			"INSERT INTO `apo` VALUES (27,'APO - IPEA CASAS','','Uberlândia','Minas Gerais');\n" \
+			"INSERT INTO `tecnica` VALUES (63,'Questionario',2);\n" \
+			"INSERT INTO `apo_tecnica` VALUES (27,63);\n" \
+			"COMMIT;"
 
 		SqlImporter.new(sql).import
 
+		assert_equal 1, Apo.count
+
+		assert_not_nil Apo.find(27)
+		assert_equal 'APO - IPEA CASAS', Apo.find(27).name
+		assert_equal '', Apo.find(27).text
+		assert_equal 'Uberlândia', Apo.find(27).city
+		assert_equal 'Minas Gerais', Apo.find(27).state
+
+
+		assert_equal 1, Technical.count
+		
+		assert_not_nil Technical.find(63)
+		assert_equal 'Questionario', Technical.find(63).name
+		assert_equal 2, Technical.find(63).respondent
+
+		
 		assert_equal 1, AposTechnical.count
 
-		assert_not_nil AposTechnical.find([21,42])
-
-		assert_equal 21, AposTechnical.find([21,42]).apo_id
-		assert_equal 42, AposTechnical.find([21,42]).technical_id
+		assert_equal 27, AposTechnical.where({:apo => 27,:technical => 63})
+		assert_equal 63, AposTechnical.where({:apo => 27,:technical => 63})
 	end
 =end
 
@@ -115,11 +131,10 @@ class SqlImporterTest < ActiveSupport::TestCase
 		assert_equal 0, Concept.find(131).order
 	end
 
-	######## O ID NAO PODE SER NULO: TEM Q ARRUMAR ISSO ######
 	test 'importing resident records' do
 		sql = "BEGIN TRANSACTION;\n" \
 			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
-			"INSERT INTO `morador` VALUES (NULL,'566778888888999','',27,'0min e 41s',NULL);\n" \
+			"INSERT INTO `morador` VALUES (5,'566778888888999','',27,'0min e 41s',NULL);\n" \
 			"COMMIT;"
 
 		SqlImporter.new(sql).import
@@ -133,7 +148,6 @@ class SqlImporterTest < ActiveSupport::TestCase
 		assert_equal '0min e 41s', Resident.find(5).time_answer
 		assert_equal nil, Resident.find(5).synchronized
 	end
-	##########################################################
 
 	test 'importing question records' do
 		sql = "BEGIN TRANSACTION;\n" \
@@ -168,11 +182,10 @@ class SqlImporterTest < ActiveSupport::TestCase
 		assert_equal 0, Qualifier.find(3767).end_
 	end
 
-	######## O ID NAO PODE SER NULO: TEM Q ARRUMAR ISSO ######
 	test 'importing answer records' do
 		sql = "BEGIN TRANSACTION;\n" \
 			"CREATE TABLE tecnica(id int, nome varchar(100), respondente int, primary key(id));\n" \
-			"INSERT INTO `resposta` VALUES (NULL,1,859,'Médio',21,0,133,0,NULL);\n" \
+			"INSERT INTO `resposta` VALUES (5,1,859,'Médio',21,0,133,0,NULL);\n" \
 			"COMMIT;"
 
 		SqlImporter.new(sql).import
@@ -182,13 +195,11 @@ class SqlImporterTest < ActiveSupport::TestCase
 		assert_not_nil Answer.find(5)
 		assert_equal 1, Answer.find(5).resident_id
 		assert_equal 859, Answer.find(5).question_id
-		assert_equal 'Médio', Answer.find(5).text
+		assert_equal 'Médio', Answer.find(5).text_
 		assert_equal 21, Answer.find(5).apo_id
 		assert_equal 0, Answer.find(5).room_id
 		assert_equal 133, Answer.find(5).concept_id
 		assert_equal 0, Answer.find(5).attribute_id
 		assert_equal nil, Answer.find(5).synchronized
 	end
-	##########################################################
-
 end

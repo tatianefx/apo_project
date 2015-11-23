@@ -1,5 +1,3 @@
 class Apo < ActiveRecord::Base
-	has_many :apos_technicals
-
-	has_many :technicals, through: :apos_technicals
+	has_and_belongs_to_many :technicals
 end

@@ -3,8 +3,6 @@ class CreateRooms < ActiveRecord::Migration
     create_table :rooms do |t|
       t.string :name
       t.integer :type_room
-
-      t.timestamps null: false
     end
   end
 end

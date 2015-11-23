@@ -2,23 +2,23 @@ class SqlImporter
 
 	TABLES_MAP = {
 		'apo' => Apo,
-#		'apo_tecnica' => AposTechnical,
+		'apo_tecnica' => AposTechnical,
 		'atributo' => Attribute,
 		'categoria' => Category,
 		'comodo' => Room,
 		'conceito' => Concept,
-#		'conceito_pergunta' => AnswersConcept,
-#		'conceito_qualificador' => ConceptsQualifier,
+		'conceito_pergunta' => ConceptsQuestion,
+		'conceito_qualificador' => ConceptsQualifiersQuestion,
 		'morador' => Resident,
 		'pergunta' => Question,
-#		'pergunta_atributo' => AnswersAttribute,
-#		'pergunta_categoria' => AnswersCategory,
-#		'pergunta_comodo' => AnswersRoom,
-#		'pergunta_qualificador' => AnswersQualifier,
+		'pergunta_atributo' => AttributesQuestion,
+		'pergunta_categoria' => CategoriesQuestion,
+		'pergunta_comodo' => QuestionsRoom,
+		'pergunta_qualificador' => QualifiersQuestion,
 		'qualificador' => Qualifier,
 		'resposta' => Answer,
-		'tecnica' => Technical
-#		'tecnica_categoria' => CategoriesTechnical
+		'tecnica' => Technical,
+		'tecnica_categoria' => CategoriesTechnical
 	}
 
 	attr_reader :sql
@@ -51,14 +51,14 @@ class SqlImporter
 					import_room(instruction)
 				when 'conceito'
 					import_concept(instruction)
-				when 'morador'
-					import_resident(instruction)
 				when 'pergunta'
 					import_question(instruction)
 				when 'qualificador'
-					import_qualifier(instruction)
+					import_qualifier(instruction)	
+				when 'morador'
+					import_resident(instruction)
 				when 'resposta'
-					import_answer(instruction)
+					import_answer(instruction)											
 				end
 
 			end	
@@ -84,15 +84,13 @@ class SqlImporter
 
     Apo.create! id: id, name: name, text: text, city: city, state: state 
 	end
-
-=begin	
+	
 	def import_apo_technical(instruction)
 		apo = instruction.match(/(\w+),/)[1]
-		technical = instruction.match(/,(\w+)/)[1]
+		technical = instruction.match(/,(\w+)\)/)[1]
 
-		AposTechnical.create! apo: apo, technical_id: technical
+		AposTechnical.create! apo: apo, technical: technical
 	end
-=end
 
 	def import_attribute(instruction)
 		id = instruction.match(/\((\w+),/)[1]
@@ -124,7 +122,6 @@ class SqlImporter
 		Concept.create! id: id, name: name, order: order
 	end
 
-	######## O ID NAO PODE SER NULO: TEM Q ARRUMAR ISSO ######
 	def import_resident(instruction)
 		id = instruction.match(/\((\w+),/)[1]
 		apartment_number = instruction.match(/.'(.+)','\.*'/)[1]
@@ -134,12 +131,11 @@ class SqlImporter
     synchronized = instruction.match(/',(\w+)\)/)[1]
 
     if synchronized == 'NULL'
-    	Resident.create! id: 5, apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer
+    	Resident.create! id: id, apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer
     else
-    	Resident.create! id: 5, apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer, synchronized: synchronized    	
+    	Resident.create! id: id, apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer, synchronized: synchronized    	
     end
 	end
-	############################################################
 
 	def import_question(instruction)
 		id = instruction.match(/\((\w+),/)[1]
@@ -157,15 +153,15 @@ class SqlImporter
     begin_ = instruction.match(/',(\w+)/)[1] 
     end_ = instruction.match(/,(\w+)\)/)[1]
 
-    Qualifier.create! id: id, text: text, begin_: begin_, end_: end_ 
+    @qualifier = Qualifier.create! id: id, text: text, begin_: begin_, end_: end_ 
+		@qualifier.save
 	end
 
-	######## O ID NAO PODE SER NULO: TEM Q ARRUMAR ISSO ######
 	def import_answer(instruction)
 		id = instruction.match(/\((\w+),/)[1]
 		resident_id = instruction.match(/\(\w+,(\w+),/)[1]
     question_id = instruction.match(/,\w+,(\w+),'/)[1]
-    text = instruction.match(/'(.+)'/)[1]
+    text_ = instruction.match(/'(.+)'/)[1]
     apo_id = instruction.match(/',(\w+),/)[1]
     room_id = instruction.match(/',\w+,(\w+),/)[1]
     concept_id = instruction.match(/',\w+,\w+,(\w+),/)[1]
@@ -173,11 +169,59 @@ class SqlImporter
     synchronized = instruction.match(/,(\w+)\)/)[1]
 
     if synchronized == 'NULL'
-			Answer.create! id: 5, resident_id: resident_id, question_id: question_id, text: text, apo_id: apo_id, room_id: room_id, concept_id: concept_id, attribute_id: attribute_id    	
+			Answer.create! id: id, resident_id: resident_id, question_id: question_id, text_: text_, apo_id: apo_id, room_id: room_id, concept_id: concept_id, attribute_id: attribute_id    	
 		else
-    	Answer.create! id: 5, resident_id: resident_id, question_id: question_id, text: text, apo_id: apo_id, room_id: room_id, concept_id: concept_id, attribute_id: attribute_id, synchronized: synchronized
+    	Answer.create! id: id, resident_id: resident_id, question_id: question_id, text_: text_, apo_id: apo_id, room_id: room_id, concept_id: concept_id, attribute_id: attribute_id, synchronized: synchronized
 		end
 	end
-	############################################################
 
+	def import_concept_question(instruction)
+		question = instruction.match(/(\w+),/)[1]
+		concept = instruction.match(/,(\w+)\)/)[1]
+
+		ConceptsQuestion.create! concept: concept, question: question
+	end
+
+	def import_concept_qualifier(instruction)
+		concept = instruction.match(/(\w+),/)[1]
+		question = instruction.match(/\(\w+,(\w+),/)[1]
+		qualifier = instruction.match(/,(\w+)\)/)[1]
+
+		ConceptsQualifiersQuestion.create! concept: concept, qualifier: qualifier, question: question
+	end
+
+	def import_attribute_question(instruction)
+		question = instruction.match(/(\w+),/)[1]
+		attribute = instruction.match(/,(\w+)\)/)[1]
+
+		AttributesQuestion.create! attribute: attribute, question: question
+	end
+
+	def import_category_question(instruction)
+		question = instruction.match(/(\w+),/)[1]
+		category = instruction.match(/,(\w+)\)/)[1]
+
+		CategoriesQuestion.create! category: category, question: question
+	end
+
+	def import_question_room(instruction)
+		question = instruction.match(/(\w+),/)[1]
+		room = instruction.match(/,(\w+)\)/)[1]
+
+		QuestionsRoom.create! question: question, room: room
+	end
+
+	def import_concept_qualifier(instruction)
+		question = instruction.match(/(\w+),/)[1]
+		qualifier = instruction.match(/,(\w+)\)/)[1]
+
+		QualifiersQuestion.create!qualifier: qualifier, question: question
+	end
+
+	def import_category_technical(instruction)
+		technical = instruction.match(/(\w+),/)[1]
+		category = instruction.match(/,(\w+)\)/)[1]
+
+		CategoriesTechnical.create! category: category, technical: technical
+	end
 end

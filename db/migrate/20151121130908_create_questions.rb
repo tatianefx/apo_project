@@ -5,8 +5,6 @@ class CreateQuestions < ActiveRecord::Migration
       t.integer :type_question
       t.integer :order
       t.integer :scale_colors
-
-      t.timestamps null: false
     end
   end
 end

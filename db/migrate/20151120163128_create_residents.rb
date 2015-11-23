@@ -6,8 +6,6 @@ class CreateResidents < ActiveRecord::Migration
       t.integer :apo_id
       t.string :time_answer
       t.integer :synchronized
-
-      t.timestamps null: false
     end
 
     add_index :residents, :apo_id

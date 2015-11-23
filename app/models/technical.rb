@@ -1,7 +1,4 @@
 class Technical < ActiveRecord::Base
-	has_many :apos_technicals
-	has_many :categories_technicals
-
-	has_many :apos, through: :apos_technicals
-	has_many :categories, through: :categories_technicals
+	has_and_belongs_to_many :apos
+	has_and_belongs_to_many :categories
 end
