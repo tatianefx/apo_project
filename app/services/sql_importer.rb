@@ -59,12 +59,12 @@ class SqlImporter
 					import_question(instruction)
 				when 'qualificador'
 					import_qualifier(instruction)	
-				when 'morador'
-					import_resident(instruction)
+#				when 'morador'
+#					import_resident(instruction)
 				when 'resposta'
 					import_answer(instruction)
-				when 'apo_tecnica'
-					import_apo_technical										
+#				when 'apo_tecnica'
+#					import_apo_technical										
 				end
 			end	
 		end
@@ -88,7 +88,6 @@ class SqlImporter
     city = instruction.match(/'\w*','(.+)','/)[1]
     state = instruction.match(/'(.+)','(.+)'/)[2]
 
-
 		Apo.create! id: id, name: name, text: text, city: city, state: state    
 	end
 	
@@ -96,8 +95,7 @@ class SqlImporter
 		apo = instruction.match(/(\w+),/)[1]
 		technical = instruction.match(/,(\w+)\)/)[1]
 
-		AposTechnical.create! apo: apo, technical: technical			
- 
+		AposTechnical.create! apo: apo, technical: technical			 
 	end
 
 	def import_attribute(instruction)
