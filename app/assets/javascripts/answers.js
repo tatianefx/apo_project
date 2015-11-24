@@ -24,11 +24,10 @@ var data = {
 };
 
 $( document ).ready(function() {
-  var ctx = document.getElementById("myChart").getContext("2d");
-	var myBarChart = new Chart(ctx).Bar(data);
-	console.log("qualquer");
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myBarChart = new Chart(ctx).Bar(data, {stacked: true});
 });
 
-
-
-
+function btntest_onclick() {
+    window.location.href = "/answers/graph/";
+}

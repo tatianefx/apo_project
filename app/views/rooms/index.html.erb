@@ -1,0 +1,20 @@
+<h1>Cômodos</h1>
+
+<table class="table table-hover">
+  <tr>
+    <th>id</th>
+    <th>nome</th>
+    <th>tipo</th>
+  </tr>
+ 
+<% @rooms.each do |room| %>
+  <tr>
+    <td><%= room.id %></td>
+    <td><%= room.text %></td>
+    <td><%= room.type_room %></td>
+    <td><%= room.order %></td>
+    <td><%= room.scale_colors %></td>
+  </tr>
+<% end %>
+</table>
+

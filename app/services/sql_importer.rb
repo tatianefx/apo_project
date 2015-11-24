@@ -59,14 +59,13 @@ class SqlImporter
 					import_question(instruction)
 				when 'qualificador'
 					import_qualifier(instruction)	
-#				when 'morador'
-#					import_resident(instruction)
+				when 'morador'
+					import_resident(instruction)
 				when 'resposta'
 					import_answer(instruction)
-#				when 'apo_tecnica'
-#					import_apo_technical										
+				when 'apo_tecnica'
+					import_apo_technical										
 				end
-
 			end	
 		end
 	end
@@ -133,17 +132,29 @@ class SqlImporter
 
 	def import_resident(instruction)
 		id = instruction.match(/\((\w+),/)[1]
-		apartment_number = instruction.match(/.'(.+)','\.*'/)[1]
-    block = instruction.match(/,'(\.*)'/)[1]
+		apartment_number = instruction.match(/.'(.*)','\.*'/)[1]
+    block = instruction.match(/,'(.*)'/)[1]
     apo_id = instruction.match(/,(\w+),/)[1]
-    time_answer = instruction.match(/'.*',\w+,'(.+)'/)[1]
+    time_answer = instruction.match(/'.*',\w+,'(.*)'/)[1]
     synchronized = instruction.match(/',(\w+)\)/)[1]
 
-		if synchronized == 'NULL'
-   		Resident.create! apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer
-   	else
-   		Resident.create! apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer, synchronized: synchronized    	
-		end 
+    if (time_answer != '' && block != '' && synchronized != 'NULL')
+   		Resident.create! id: id, apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer, synchronized: synchronized
+		elsif (time_answer != '' && block != '' && synchronized == 'NULL')
+			Resident.create! id: id, apartment_number: apartment_number, block: block, apo_id: apo_id, time_answer: time_answer
+		elsif (time_answer != '' && block == '' && synchronized != 'NULL')
+			Resident.create! id: id, apartment_number: apartment_number, apo_id: apo_id, time_answer: time_answer, synchronized: synchronized
+		elsif (time_answer != '' && block == '' && synchronized == 'NULL')
+			Resident.create! id: id, apartment_number: apartment_number, apo_id: apo_id, time_answer: time_answer
+		elsif (time_answer == '' && block != '' && synchronized != 'NULL')
+			Resident.create! id: id, apartment_number: apartment_number, block: block, apo_id: apo_id, synchronized: synchronized
+		elsif (time_answer == '' && block != '' && synchronized == 'NULL')
+			Resident.create! id: id, apartment_number: apartment_number, block: block, apo_id: apo_id
+		elsif (time_answer == '' && block == '' && synchronized != 'NULL')
+			Resident.create! id: id, apartment_number: apartment_number, apo_id: apo_id, synchronized: synchronized
+		else (time_answer == '' && block == '' && synchronized == 'NULL')
+			Resident.create! id: id, apartment_number: apartment_number, apo_id: apo_id
+		end
 	end
 
 	def import_question(instruction)
@@ -236,5 +247,6 @@ class SqlImporter
 		category = instruction.match(/,(\w+)\)/)[1]
 
 		CategoriesTechnical.create! category: category, technical: technical
-	end
+	end	
+
 end

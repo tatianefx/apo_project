@@ -1,0 +1,17 @@
+<h1>Conceito</h1>
+
+<table class="table table-hover">
+  <tr>
+    <th>id</th>
+    <th>nome</th>
+    <th>ordem</th>
+  </tr>
+ 
+<% @concepts.each do |concept| %>
+  <tr>
+    <td><%= concept.id %></td>
+    <td><%= concept.name %></td>
+    <td><%= concept.order %></td>
+  </tr>
+<% end %>
+</table>

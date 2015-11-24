@@ -1,3 +1,24 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.dropdown-menu > li{
+	width: 100%;
+}
+
+.page-header > h1{
+	padding: 20px 0px 0px 50px;
+	margin-bottom: 0;
+}
+
+/*.navbar-fixed-bottom > div{
+	width: 100%;
+}
+*/
+
+.dropdown-toggle{
+	font-size: 17.5px;	
+}
+
+body { padding-bottom: 70px; }
+

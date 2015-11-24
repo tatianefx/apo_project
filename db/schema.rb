@@ -133,7 +133,8 @@ ActiveRecord::Schema.define(version: 20151122215330) do
   add_index "questions_rooms", ["question_id"], name: "index_questions_rooms_on_question_id", using: :btree
   add_index "questions_rooms", ["room_id"], name: "index_questions_rooms_on_room_id", using: :btree
 
-  create_table "residents", force: :cascade do |t|
+  create_table "residents", id: false, force: :cascade do |t|
+    t.integer "id"
     t.string  "apartment_number"
     t.string  "block"
     t.integer "apo_id"

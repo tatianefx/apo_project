@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
+  resources :rooms, only: :index
+
   resources :questions, only: :index
+
+  resources :concepts, only: :index
 
   resources :answers, only: :index do
   	get :graph, on: :collection
