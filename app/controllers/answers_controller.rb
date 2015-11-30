@@ -18,4 +18,4 @@ class AnswersController < ApplicationController
   	render :json => @data_count
   end
 
-end]
+end
