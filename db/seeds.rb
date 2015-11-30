@@ -6,10 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-
-#file = File.open("/db/export.sql", "r")
-#data = file.read
-
 data = File.read("./db/export.sql")
 
 SqlImporter.new(data).import
