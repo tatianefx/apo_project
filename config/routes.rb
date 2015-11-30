@@ -8,7 +8,6 @@ Rails.application.routes.draw do
 
   resources :answers, only: :index do
   	get :graph, on: :collection
-  	get :data_label, on: :collection
     get :data_count, on: :collection
   end
   
